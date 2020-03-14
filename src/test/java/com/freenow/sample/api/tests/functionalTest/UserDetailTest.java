@@ -17,14 +17,21 @@ public class UserDetailTest extends TestBase {
     private static Object[] userDetails;
     private static SoftAssert softAssert;
 
-    @BeforeClass
-    public static void initiate(ITestContext iTestContext) {
-        iTestContext.setAttribute("feature", "User Detail - Functional");
+    public UserDetailTest() {
         softAssert = new SoftAssert();
     }
 
+    public static Long getUserID() {
+        return userID;
+    }
+
+    @BeforeClass
+    public static void initiate(ITestContext iTestContext) {
+        iTestContext.setAttribute("feature", "User Detail - Functional");
+    }
+
     @Test(description = "ID-001", dataProvider = "valid-user-data-provider", dataProviderClass = UserDataProvider.class)
-    public static void testUserSearchByName(String userName) {
+    public static void testUserSearchByValidName(Object userName) {
         Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatus(response) == 200) {
             // map the response to User Details object
@@ -39,7 +46,7 @@ public class UserDetailTest extends TestBase {
     }
 
     @Test(description = "ID-002", dataProvider = "invalid-user-data-provider", dataProviderClass = UserDataProvider.class)
-    public static void testInvalidUserSearchByName(String userName) {
+    public static void testInvalidUserSearchByValidName(Object userName) {
         Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatus(response) == 200) {
             // map the response to User Details object
@@ -49,7 +56,7 @@ public class UserDetailTest extends TestBase {
         }
 
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), 200, "ERROR : Response status code should be 200.");
-        softAssert.assertNull(userID, "ERROR : Got Data for non existing User : " + userName);
+        softAssert.assertNull(userID, "ERROR : Returned Data for non existing User : " + userName);
         softAssert.assertAll();
     }
 }

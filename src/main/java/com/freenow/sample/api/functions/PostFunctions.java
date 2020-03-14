@@ -13,11 +13,11 @@ import java.util.Map;
 public class PostFunctions {
     /**
      *
-     * @param userName
-     * @return response
+     * @param send any type of userIDs instead Long type only
+     * @return User's Posts by User ID
      */
 
-    public static Response searchPostByUserID(Long userID){
+    public static Response searchPostByUserID(Object userID){
         LoggerUtil.logINFO("REQUEST -> PostFunctions.search Posts by User ID: " + userID);
         Map<String, String> queryParameters = new HashMap<>();
         queryParameters.put("userId", userID.toString());

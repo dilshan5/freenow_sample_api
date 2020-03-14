@@ -9,8 +9,17 @@ import io.restassured.specification.RequestSpecification;
 import java.util.Map;
 
 public class RestUtil {
-    public static String BASE_URI;
-    public static String BASE_PATH;
+
+    private static String BASE_URI;
+    private static String BASE_PATH;
+
+    public static void setBaseUri(String baseUri) {
+        BASE_URI = baseUri;
+    }
+
+    public static void setBasePath(String basePath) {
+        BASE_PATH = basePath;
+    }
 
     public RestUtil() {
     }

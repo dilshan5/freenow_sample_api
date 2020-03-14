@@ -9,6 +9,7 @@ public class URIs {
     public static final String BASE_PATH = "/";
     public static final String USER_PATH = "users";
     public static final String POST_PATH = "posts";
+    public static final String COMMENTS_PATH = "comments";
 
     URIs() {
 

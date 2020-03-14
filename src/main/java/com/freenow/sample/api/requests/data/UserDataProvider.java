@@ -18,7 +18,7 @@ public class UserDataProvider {
     public static Object[][] getInvalidUsersDataprovider() {
         return new Object[][]{
                 {"samantha"},
-                {"65556"},
+                {65556},
                 {"@#$%%^"},
                 {""},
                 {"DennisdfghjDFGHJKDFGHJ"}
@@ -28,16 +28,18 @@ public class UserDataProvider {
     @DataProvider(name = "valid-user-ids-provider")
     public static Object[][] getValidUsersIDsprovider() {
         return new Object[][]{
-                {new Long(1)},
-                {new Long(2)}
+                {1},
+                {2}
         };
     }
 
     @DataProvider(name = "invalid-user-ids-provider")
     public static Object[][] getInvalidUsersIDsprovider() {
         return new Object[][]{
-                {new Long(233433344)},
-                {new Long(876567333)}
+                {234455},
+                {"hfhgffg"},
+                {"@#$"},
+                {""}
         };
     }
 }

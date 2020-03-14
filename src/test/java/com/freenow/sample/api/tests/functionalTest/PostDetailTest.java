@@ -3,6 +3,7 @@ package com.freenow.sample.api.tests.functionalTest;
 import com.freenow.sample.api.functions.PostFunctions;
 import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.PostModel.PostDetails;
+import com.freenow.sample.api.response.models.UserModel.UserDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
@@ -20,20 +21,29 @@ public class PostDetailTest extends TestBase {
     private static Object[] postDetails;
     private static SoftAssert softAssert;
 
+    public PostDetailTest() {
+        softAssert = new SoftAssert();
+        postIDList = null;
+    }
+
+    public static int[] getPostIDList() {
+        return postIDList;
+    }
+
     @BeforeClass
     public static void initiate(ITestContext iTestContext) {
         iTestContext.setAttribute("feature", "User Post Detail - Functional");
-        softAssert = new SoftAssert();
     }
 
     @Test(description = "ID-003", dataProvider = "valid-user-ids-provider", dataProviderClass = UserDataProvider.class)
-    public static void testPostSearchByUserID(Long userID) {
+    public static void testPostSearchByValidUserID(Object userID) {
         Response response = PostFunctions.searchPostByUserID(userID);
         if (ResponseUtil.getResponseStatus(response) == 200) {
             // map the response to Post Details object
             postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
+            //initialize array
+            postIDList = ((postDetails.length != 0) ? new int[postDetails.length] : null);
             //get Post IDs List
-            postIDList = new int[postDetails.length];
             for (int i = 0; i < postDetails.length; i++) {
                 postIDList[i] = ((PostDetails) postDetails[i]).getId();
 
@@ -45,19 +55,20 @@ public class PostDetailTest extends TestBase {
     }
 
     @Test(description = "ID-004", dataProvider = "invalid-user-ids-provider", dataProviderClass = UserDataProvider.class)
-    public static void testPostSearchByInvalidUserID(Long userID) {
+    public static void testPostSearchByInvalidUserID(Object userID) {
         Response response = PostFunctions.searchPostByUserID(userID);
         if (ResponseUtil.getResponseStatus(response) == 200) {
             // map the response to Post Details object
             postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
+            //initialize array
+            postIDList = ((postDetails.length != 0) ? new int[postDetails.length] : null);
             //get Post IDs List
-            postIDList = new int[postDetails.length];
             for (int i = 0; i < postDetails.length; i++) {
                 postIDList[i] = ((PostDetails) postDetails[i]).getId();
 
             }
             softAssert.assertEquals(ResponseUtil.getResponseStatus(response), 200, "ERROR : Response status code should be 200.");
-            softAssert.assertNotNull(postIDList, "ERROR : Unable to find a Post by user ID : " + userID + ". Please check again.");
+            softAssert.assertNull(postIDList, "ERROR : Returned a Post details for a non existing user ID : " + userID + ". Please check again.");
             softAssert.assertAll();
         }
 

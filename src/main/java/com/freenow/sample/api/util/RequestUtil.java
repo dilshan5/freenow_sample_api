@@ -14,8 +14,8 @@ public class RequestUtil {
     }
 
     public static void setRequestBaseUrls() {
-        RestUtil.BASE_URI = URIs.BASE_URI;
-        RestUtil.BASE_PATH = URIs.BASE_PATH;
+        RestUtil.setBaseUri(URIs.BASE_URI);
+        RestUtil.setBasePath(URIs.BASE_PATH);
 
     }
     public static Response send(Map<String, String> headers, String bodyString, String uri, HTTPRequestMethods requestMethod, Map<String, String> queryParameters) {

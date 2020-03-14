@@ -16,14 +16,14 @@ public class UserFunctions {
 
     /**
      *
-     * @param userName
-     * @return response
+     * @param send any type of userName instead String only
+     * @return user details by Name
      */
 
-    public static Response searchUserByName(String userName){
+    public static Response searchUserByName(Object userName){
         LoggerUtil.logINFO("REQUEST -> UserFunctions.search users by Name: " + userName);
         Map<String, String> queryParameters = new HashMap<>();
-        queryParameters.put("username", userName);
+        queryParameters.put("username", userName.toString());
         Response response = RestUtil.send(HeadersUtil.getJsonHeaders(),"", URIs.USER_PATH, HTTPRequestMethods.GET,queryParameters);
 
         return response;
