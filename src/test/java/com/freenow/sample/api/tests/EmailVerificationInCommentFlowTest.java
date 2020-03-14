@@ -7,10 +7,11 @@ import com.freenow.sample.api.functions.UserFunctions;
 import io.restassured.response.Response;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class EmailVerificationTest extends TestBase {
+public class EmailVerificationInCommentFlowTest extends TestBase {
 
     private static Long userID;
     private static Object[] userDetails;
@@ -23,9 +24,10 @@ public class EmailVerificationTest extends TestBase {
         softAssert = new SoftAssert();
     }
 
+    @Parameters({"userName"})
     @Test(description = "ID-001")
-    public static void testUserSearchByName() {
-        Response response = UserFunctions.searchUserByName("Antonette");
+    public static void testUserSearchByName(String userName) {
+        Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatus(response) == 200) {
             // map the response to User Details object
             userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
@@ -34,7 +36,7 @@ public class EmailVerificationTest extends TestBase {
         }
 
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), 200, "ERROR : Response status code should be 200.");
-        softAssert.assertNotNull(userID, "ERROR : User ID was not found in the response.");
+        softAssert.assertNotNull(userID, "ERROR : Unable to find a User named : "+ userName+". Please check again.");
         softAssert.assertAll();
     }
 
