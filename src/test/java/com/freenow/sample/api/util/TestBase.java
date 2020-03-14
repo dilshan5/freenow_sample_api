@@ -1,6 +1,5 @@
 package com.freenow.sample.api.util;
 
-
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -8,6 +7,7 @@ public class TestBase {
 
     @BeforeClass
     public void init() {
+        RequestUtil.setRequestBaseUrls();
         System.out.println("====== Start Running " + this.getClass().toString() + " =========");
     }
 

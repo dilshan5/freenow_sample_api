@@ -17,7 +17,6 @@ public class EmailVerificationInCommentFlowTest extends TestBase {
     private static Object[] userDetails;
     private static SoftAssert softAssert;
 
-
     @BeforeClass
     public static void initiate(ITestContext iTestContext) {
         iTestContext.setAttribute("feature", "Email Verification - Comments");
@@ -36,7 +35,7 @@ public class EmailVerificationInCommentFlowTest extends TestBase {
         }
 
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), 200, "ERROR : Response status code should be 200.");
-        softAssert.assertNotNull(userID, "ERROR : Unable to find a User named : "+ userName+". Please check again.");
+        softAssert.assertNotNull(userID, "ERROR : Unable to find a User named : " + userName + ". Please check again.");
         softAssert.assertAll();
     }
 

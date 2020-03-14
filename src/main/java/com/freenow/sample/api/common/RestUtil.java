@@ -9,17 +9,19 @@ import io.restassured.specification.RequestSpecification;
 import java.util.Map;
 
 public class RestUtil {
+    public static String BASE_URI;
+    public static String BASE_PATH;
 
     public RestUtil() {
     }
 
     /***
-     * This method will set the parameters and send the request to the resource
+     * This method will set the parameters and send the request to the endpoint
      * @return will return response
      */
     public static Response send(Map<String, String> headers, String bodyString, String uri, HTTPRequestMethods requestMethod, Map<String, String> queryParameters) {
-        RestAssured.baseURI = URIs.BASE_URI;
-        RestAssured.basePath = URIs.BASE_PATH;
+        RestAssured.baseURI = BASE_URI;
+        RestAssured.basePath = BASE_PATH;
 
         System.out.println("\n\nHEADERS\n" + headers + "\n*********\n\n");
         System.out.println("\n\nREQUEST_URL\n" + RestAssured.baseURI + RestAssured.basePath + uri + "\n*********\n\n");
@@ -98,10 +100,10 @@ public class RestUtil {
         return response;
     }
 
-    public static int getResponseCode(Response response) {
-        return response.getStatusCode();
-    }
-
+    /**
+     * Print request body
+     * @param bodyString
+     */
     private static void logRequestBody(String bodyString) {
         if (bodyString != null && !bodyString.isEmpty())
             LoggerUtil.logINFO("\n\nREQUEST_BODY\n" + bodyString + "\n********\n\n");
@@ -110,7 +112,6 @@ public class RestUtil {
 
     /**
      * print the requested http method and URI
-     *
      * @param theURI
      * @param requestMethod
      * @param response
@@ -125,7 +126,6 @@ public class RestUtil {
 
     /**
      * print the response
-     *
      * @param response
      */
     private static void logResponse(Response response) {

@@ -1,5 +1,8 @@
 package com.freenow.sample.api.common;
 
+/**
+ * Define all the constant variables in the project
+ */
 public class Constant {
 
     public static final String TEST_ENV = System.getProperty("tests.env", "QE");

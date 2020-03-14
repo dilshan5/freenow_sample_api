@@ -1,5 +1,8 @@
 package com.freenow.sample.api.common;
 
+/**
+ * Contain all the URIs in the project
+ */
 public class URIs {
 
     public static final String BASE_URI = "https://jsonplaceholder.typicode.com";
