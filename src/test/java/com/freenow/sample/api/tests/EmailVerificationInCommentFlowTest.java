@@ -1,5 +1,6 @@
 package com.freenow.sample.api.tests;
 
+import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.UserModel.UserDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
@@ -23,8 +24,7 @@ public class EmailVerificationInCommentFlowTest extends TestBase {
         softAssert = new SoftAssert();
     }
 
-    @Parameters({"userName"})
-    @Test(description = "ID-001")
+    @Test(description = "ID-001", dataProvider = "valid-user-data-provider", dataProviderClass = UserDataProvider.class)
     public static void testUserSearchByName(String userName) {
         Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatus(response) == 200) {
@@ -36,6 +36,21 @@ public class EmailVerificationInCommentFlowTest extends TestBase {
 
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), 200, "ERROR : Response status code should be 200.");
         softAssert.assertNotNull(userID, "ERROR : Unable to find a User named : " + userName + ". Please check again.");
+        softAssert.assertAll();
+    }
+
+    @Test(description = "ID-002", dataProvider = "invalid-user-data-provider", dataProviderClass = UserDataProvider.class)
+    public static void testInvalidUserSearchByName(String userName) {
+        Response response = UserFunctions.searchUserByName(userName);
+        if (ResponseUtil.getResponseStatus(response) == 200) {
+            // map the response to User Details object
+            userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
+            //get User ID
+            userID = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getId() : null);
+        }
+
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), 200, "ERROR : Response status code should be 200.");
+        softAssert.assertNull(userID, "ERROR : Got Data for non existing User : " + userName);
         softAssert.assertAll();
     }
 

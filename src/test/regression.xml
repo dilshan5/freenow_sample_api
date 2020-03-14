@@ -2,7 +2,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="regression" verbose="10" configfailurepolicy="continue">
     <test name="regression">
-        <parameter name="userName" value="Samanthaa"/>
         <classes>
             <class name="com.freenow.sample.api.tests.EmailVerificationInCommentFlowTest"/>
         </classes>
