@@ -17,7 +17,7 @@ public class UserFunctions {
     /**
      *
      * @param userName
-     * @return user details object
+     * @return response
      */
 
     public static Response searchUserByName(String userName){

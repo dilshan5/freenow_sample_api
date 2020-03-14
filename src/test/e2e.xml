@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="regression" verbose="1" configfailurepolicy="continue">
+    <test name="regression">
+        <parameter name="userName" value="Samantha"/>
+        <classes>
+            <class name="com.freenow.sample.api.tests.e2e.E2EWorkFlowTest"/>
+        </classes>
+    </test>
+</suite>

@@ -20,7 +20,24 @@ public class UserDataProvider {
                 {"samantha"},
                 {"65556"},
                 {"@#$%%^"},
+                {""},
                 {"DennisdfghjDFGHJKDFGHJ"}
+        };
+    }
+
+    @DataProvider(name = "valid-user-ids-provider")
+    public static Object[][] getValidUsersIDsprovider() {
+        return new Object[][]{
+                {new Long(1)},
+                {new Long(2)}
+        };
+    }
+
+    @DataProvider(name = "invalid-user-ids-provider")
+    public static Object[][] getInvalidUsersIDsprovider() {
+        return new Object[][]{
+                {new Long(233433344)},
+                {new Long(876567333)}
         };
     }
 }

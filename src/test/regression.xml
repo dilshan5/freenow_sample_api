@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="regression" verbose="10" configfailurepolicy="continue">
-    <test name="regression">
-        <classes>
-            <class name="com.freenow.sample.api.tests.EmailVerificationInCommentFlowTest"/>
-        </classes>
-    </test>
-</suite>

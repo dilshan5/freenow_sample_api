@@ -1,18 +1,17 @@
-package com.freenow.sample.api.tests;
+package com.freenow.sample.api.tests.functionalTest;
 
+import com.freenow.sample.api.functions.UserFunctions;
 import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.UserModel.UserDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
-import com.freenow.sample.api.functions.UserFunctions;
 import io.restassured.response.Response;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class EmailVerificationInCommentFlowTest extends TestBase {
+public class UserDetailTest extends TestBase {
 
     private static Long userID;
     private static Object[] userDetails;
@@ -20,7 +19,7 @@ public class EmailVerificationInCommentFlowTest extends TestBase {
 
     @BeforeClass
     public static void initiate(ITestContext iTestContext) {
-        iTestContext.setAttribute("feature", "Email Verification - Comments");
+        iTestContext.setAttribute("feature", "User Detail - Functional");
         softAssert = new SoftAssert();
     }
 
@@ -53,5 +52,4 @@ public class EmailVerificationInCommentFlowTest extends TestBase {
         softAssert.assertNull(userID, "ERROR : Got Data for non existing User : " + userName);
         softAssert.assertAll();
     }
-
 }
