@@ -1,11 +1,8 @@
 package com.freenow.sample.api.tests.functionalTest;
 
 import com.freenow.sample.api.functions.CommentsFunctions;
-import com.freenow.sample.api.functions.PostFunctions;
 import com.freenow.sample.api.requests.data.PostDataProvider;
-import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.CommentsModel.CommentDetails;
-import com.freenow.sample.api.response.models.PostModel.PostDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;

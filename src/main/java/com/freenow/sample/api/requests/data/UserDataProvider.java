@@ -37,7 +37,6 @@ public class UserDataProvider {
     public static Object[][] getInvalidUsersIDsprovider() {
         return new Object[][]{
                 {-5},
-                {01},
                 {65536},
                 {"hfhgffg"},
                 {"@#$"},
