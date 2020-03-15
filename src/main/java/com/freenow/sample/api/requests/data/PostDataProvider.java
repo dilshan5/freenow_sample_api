@@ -8,7 +8,7 @@ public class PostDataProvider {
     public static Object[][] getValidPostDataprovider() {
         return new Object[][]{
                 {1},
-                {21}
+                {"01"}
         };
     }
 
@@ -16,7 +16,8 @@ public class PostDataProvider {
     public static Object[][] getInvalidPostDataprovider() {
         return new Object[][]{
                 {"@$%^"},
-                {"65556"},
+                {"-12"},
+                {"42949672956"},
                 {""},
                 {"DennisdfghjDFGHJKDFGHJ"}
         };
