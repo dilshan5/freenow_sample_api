@@ -5,7 +5,7 @@ A sample project which demonstrates how to use RestAssured with Java.
 This test uses a number of open source projects to work properly:
 
 * https://testng.org/doc/ - is a testing framework
-* https://maven.apache.org/ - Maven used for project management
+* https://maven.apache.org/ - Dependency management and project management 
 * https://circleci.com/ - Continuous Integration tool
 * https://jsonplaceholder.typicode.com/ - Endpoints that are used in this porject
 

@@ -1,5 +1,6 @@
 package com.freenow.sample.api.tests.e2e;
 
+import com.freenow.sample.api.common.LoggerUtil;
 import com.freenow.sample.api.tests.functionalTest.CommentsDetailTest;
 import com.freenow.sample.api.tests.functionalTest.PostDetailTest;
 import com.freenow.sample.api.tests.functionalTest.UserDetailTest;
@@ -17,14 +18,14 @@ public class E2EWorkFlowTest extends TestBase {
     @Test(description = "ID-005")
     public static void testEmailVerificationInComments(@Optional("Samantha") String userName) {
         //Get userID
-        UserDetailTest.testUserSearchByValidName(userName);
+        UserDetailTest.testGetUserWithValidName(userName);
         //Get all the Post IDs which has been posted by above user
-        PostDetailTest.testPostSearchByValidUserID(UserDetailTest.getUserID());
+        PostDetailTest.testGetPostWithValidUserID(UserDetailTest.getUserID());
         //Verify the email address format in each comment, for each post
-        for(int postId : PostDetailTest.getPostIDList()){
+        for (int postId : PostDetailTest.getPostIDList()) {
             CommentsDetailTest.testVerifyEmailAddress(postId);
         }
-
+        LoggerUtil.logINFO("Verified Email address format in all Comments for User: " + userName);
     }
 
 }

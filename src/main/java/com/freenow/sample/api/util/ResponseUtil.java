@@ -14,9 +14,8 @@ public class ResponseUtil {
 
 
     /**
-     *
      * @param response
-     * @param class Name to map the response.
+     * @param className to map the response.
      * @return
      */
     public static Object[] getObject(String response, Class c) {
@@ -28,8 +27,28 @@ public class ResponseUtil {
         return null;
     }
 
-    public static int getResponseStatus(Response response){
-        return  response.getStatusCode();
+    /**
+     * @param response
+     * @return status code
+     */
+    public static int getResponseStatusCode(Response response) {
+        return response.getStatusCode();
+    }
+
+    /**
+     * @param response
+     * @return status message
+     */
+    public static String getResponseStatus(Response response) {
+        return response.getStatusLine().split(" ")[2];
+    }
+
+    /**
+     * @param response
+     * @return response body
+     */
+    public static String getResponseBody(Response response) {
+        return response.asString();
     }
 
 }
