@@ -4,6 +4,7 @@ import com.freenow.sample.api.tests.functionalTest.CommentsDetailTest;
 import com.freenow.sample.api.tests.functionalTest.PostDetailTest;
 import com.freenow.sample.api.tests.functionalTest.UserDetailTest;
 import com.freenow.sample.api.util.TestBase;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 /**
@@ -11,10 +12,11 @@ import org.testng.annotations.Test;
  */
 public class E2EWorkFlowTest extends TestBase {
 
+    @Parameters({"userName"})
     @Test(description = "ID-005")
-    public static void testEmailVerificationInComments() {
+    public static void testEmailVerificationInComments(String userName) {
         //Get userID
-        UserDetailTest.testUserSearchByValidName("Samantha");
+        UserDetailTest.testUserSearchByValidName(userName);
         //Get all the Post IDs which has been posted by above user
         PostDetailTest.testPostSearchByValidUserID(UserDetailTest.getUserID());
         //Verify the email address format in each comment, for each post

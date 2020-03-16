@@ -3,6 +3,11 @@ package com.freenow.sample.api.response.models.PostModel;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class map with GET Post detail response
+ * Generate Plain Java Objects from JSON
+ * Used http://www.jsonschema2pojo.org/
+ */
 public class PostDetails {
     private int userId;
     private int id;

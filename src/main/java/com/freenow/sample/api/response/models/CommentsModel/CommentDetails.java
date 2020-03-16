@@ -3,6 +3,11 @@ package com.freenow.sample.api.response.models.CommentsModel;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class map with GET Comment detail response
+ * Generate Plain Java Objects from JSON
+ * Used http://www.jsonschema2pojo.org/
+ */
 public class CommentDetails {
     private int postId;
     private int id;

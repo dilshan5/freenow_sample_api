@@ -1,7 +1,9 @@
 package com.freenow.sample.api.response.models.UserModel;
 
 /**
- * This class map with User detail response
+ * This class map with GET User detail response
+ * Generate Plain Java Objects from JSON
+ * Used http://www.jsonschema2pojo.org/
  */
 public class UserDetails {
     private long id;
