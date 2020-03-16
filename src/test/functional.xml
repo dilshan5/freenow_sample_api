@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="functional" verbose="10" configfailurepolicy="continue">
+<suite name="functional" verbose="10" configfailurepolicy="continue" data-provider-thread-count="4">
     <test name="functional">
         <classes>
             <class name="com.freenow.sample.api.tests.functionalTest.UserDetailTest"/>
             <class name="com.freenow.sample.api.tests.functionalTest.PostDetailTest"/>
-            <class name="com.freenow.sample.api.tests.functionalTest.CommentsDetailTest"/>
+            <class name="com.freenow.sample.api.tests.functionalTest.CommentsDetailTest">
+                <parameter name="postID" value="1"></parameter>
+            </class>
         </classes>
     </test>
 </suite>

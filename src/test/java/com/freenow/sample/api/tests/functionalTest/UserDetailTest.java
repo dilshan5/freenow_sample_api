@@ -15,14 +15,13 @@ public class UserDetailTest extends TestBase {
 
     private static Long userID;
     private static Object[] userDetails;
-    private static SoftAssert softAssert;
-
-    public UserDetailTest() {
-        softAssert = new SoftAssert();
-    }
 
     public static Long getUserID() {
         return userID;
+    }
+
+    public static void setUserDetails(Object[] userDetails) {
+        UserDetailTest.userDetails = userDetails;
     }
 
     @BeforeClass
@@ -32,8 +31,10 @@ public class UserDetailTest extends TestBase {
 
     @Test(description = "ID-001", dataProvider = "valid-user-data-provider", dataProviderClass = UserDataProvider.class)
     public static void testUserSearchByValidName(Object userName) {
+        SoftAssert softAssert = new SoftAssert();
         Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatus(response) == 200) {
+            setUserDetails(null);
             // map the response to User Details object
             userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
             //get User ID
@@ -46,9 +47,11 @@ public class UserDetailTest extends TestBase {
     }
 
     @Test(description = "ID-002", dataProvider = "invalid-user-data-provider", dataProviderClass = UserDataProvider.class)
-    public static void testInvalidUserSearchByValidName(Object userName) {
+    public static void testUserSearchByInvalidName(Object userName) {
+        SoftAssert softAssert = new SoftAssert();
         Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatus(response) == 200) {
+            setUserDetails(null);
             // map the response to User Details object
             userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
             //get User ID

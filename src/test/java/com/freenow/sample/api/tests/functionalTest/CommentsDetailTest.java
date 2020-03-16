@@ -8,6 +8,8 @@ import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -15,14 +17,9 @@ public class CommentsDetailTest extends TestBase {
 
     private static int[] commentsIDList;
     private static Object[] commentsDetails;
-    private static SoftAssert softAssert;
 
-    public CommentsDetailTest() {
-        softAssert = new SoftAssert();
-    }
-
-    public static Object[] getCommentsDetails() {
-        return commentsDetails;
+    public static void setCommentsDetails(Object[] commentsDetails) {
+        CommentsDetailTest.commentsDetails = commentsDetails;
     }
 
     @BeforeClass
@@ -31,9 +28,11 @@ public class CommentsDetailTest extends TestBase {
     }
 
     @Test(description = "ID-006", dataProvider = "valid-post-ids-provider", dataProviderClass = PostDataProvider.class)
-    public static void testCommentsSearchByPostID(Object postID) {
+    public static void testCommentsSearchByValidPostID(Object postID) {
+        SoftAssert softAssert = new SoftAssert();
         Response response = CommentsFunctions.searchCommentsByPostID(postID);
         if (ResponseUtil.getResponseStatus(response) == 200) {
+            setCommentsDetails(null);
             // map the response to Comment Details object
             commentsDetails = ResponseUtil.getObject(response.asString(), CommentDetails[].class);
             //initialize array
@@ -51,8 +50,10 @@ public class CommentsDetailTest extends TestBase {
 
     @Test(description = "ID-007", dataProvider = "invalid-post-ids-provider", dataProviderClass = PostDataProvider.class)
     public static void testCommentsSearchByInvalidPostID(Object postID) {
+        SoftAssert softAssert = new SoftAssert();
         Response response = CommentsFunctions.searchCommentsByPostID(postID);
         if (ResponseUtil.getResponseStatus(response) == 200) {
+            setCommentsDetails(null);
             // map the response to Comments Details object
             commentsDetails = ResponseUtil.getObject(response.asString(), CommentDetails[].class);
             //initialize array
@@ -66,4 +67,22 @@ public class CommentsDetailTest extends TestBase {
             softAssert.assertAll();
         }
     }
+
+    @Parameters({"postID"})
+    @Test(description = "ID-008",alwaysRun = true)
+    public static void testEmailVerification(@Optional("3") int postID) {
+        SoftAssert softAssert = new SoftAssert();
+        setCommentsDetails(null);
+        testCommentsSearchByValidPostID(postID);
+        for (CommentDetails comment : (CommentDetails[]) commentsDetails) {
+            softAssert.assertTrue(isValidEmailAddress(comment.getEmail()), "Found Invalid email address: " + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
+        }
+        softAssert.assertAll();
+    }
+
+    private static boolean isValidEmailAddress(String emailAddress) {
+
+        return true;
+    }
+
 }

@@ -19,11 +19,9 @@ public class PostDetailTest extends TestBase {
 
     private static int[] postIDList;
     private static Object[] postDetails;
-    private static SoftAssert softAssert;
 
-    public PostDetailTest() {
-        softAssert = new SoftAssert();
-        postIDList = null;
+    public static void setPostDetails(Object[] postDetails) {
+        PostDetailTest.postDetails = postDetails;
     }
 
     public static int[] getPostIDList() {
@@ -37,8 +35,10 @@ public class PostDetailTest extends TestBase {
 
     @Test(description = "ID-003", dataProvider = "valid-user-ids-provider", dataProviderClass = UserDataProvider.class)
     public static void testPostSearchByValidUserID(Object userID) {
+        SoftAssert softAssert = new SoftAssert();
         Response response = PostFunctions.searchPostByUserID(userID);
         if (ResponseUtil.getResponseStatus(response) == 200) {
+            setPostDetails(null);
             // map the response to Post Details object
             postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
             //initialize array
@@ -56,8 +56,10 @@ public class PostDetailTest extends TestBase {
 
     @Test(description = "ID-004", dataProvider = "invalid-user-ids-provider", dataProviderClass = UserDataProvider.class)
     public static void testPostSearchByInvalidUserID(Object userID) {
+        SoftAssert softAssert = new SoftAssert();
         Response response = PostFunctions.searchPostByUserID(userID);
         if (ResponseUtil.getResponseStatus(response) == 200) {
+            setPostDetails(null);
             // map the response to Post Details object
             postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
             //initialize array
