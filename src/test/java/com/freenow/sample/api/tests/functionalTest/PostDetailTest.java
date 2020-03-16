@@ -3,12 +3,9 @@ package com.freenow.sample.api.tests.functionalTest;
 import com.freenow.sample.api.functions.PostFunctions;
 import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.PostModel.PostDetails;
-import com.freenow.sample.api.response.models.UserModel.UserDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
-import org.testng.ITestContext;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -26,11 +23,6 @@ public class PostDetailTest extends TestBase {
 
     public static int[] getPostIDList() {
         return postIDList;
-    }
-
-    @BeforeClass
-    public static void initiate(ITestContext iTestContext) {
-        iTestContext.setAttribute("feature", "User Post Detail - Functional");
     }
 
     @Test(description = "ID-003", dataProvider = "valid-user-ids-provider", dataProviderClass = UserDataProvider.class)

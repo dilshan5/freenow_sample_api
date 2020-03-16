@@ -6,8 +6,6 @@ import com.freenow.sample.api.response.models.CommentsModel.CommentDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
-import org.testng.ITestContext;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -20,11 +18,6 @@ public class CommentsDetailTest extends TestBase {
 
     public static void setCommentsDetails(Object[] commentsDetails) {
         CommentsDetailTest.commentsDetails = commentsDetails;
-    }
-
-    @BeforeClass
-    public static void initiate(ITestContext iTestContext) {
-        iTestContext.setAttribute("feature", "Comment Details in the Post - Functional");
     }
 
     @Test(description = "ID-006", dataProvider = "valid-post-ids-provider", dataProviderClass = PostDataProvider.class)
@@ -70,7 +63,7 @@ public class CommentsDetailTest extends TestBase {
 
     @Parameters({"postID"})
     @Test(description = "ID-008",alwaysRun = true)
-    public static void testEmailVerification(@Optional("3") int postID) {
+    public static void testVerifyEmailAddress(@Optional("3") Object postID) {
         SoftAssert softAssert = new SoftAssert();
         setCommentsDetails(null);
         testCommentsSearchByValidPostID(postID);

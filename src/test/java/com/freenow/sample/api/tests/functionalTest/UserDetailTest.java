@@ -6,8 +6,6 @@ import com.freenow.sample.api.response.models.UserModel.UserDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
-import org.testng.ITestContext;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -22,11 +20,6 @@ public class UserDetailTest extends TestBase {
 
     public static void setUserDetails(Object[] userDetails) {
         UserDetailTest.userDetails = userDetails;
-    }
-
-    @BeforeClass
-    public static void initiate(ITestContext iTestContext) {
-        iTestContext.setAttribute("feature", "User Detail - Functional");
     }
 
     @Test(description = "ID-001", dataProvider = "valid-user-data-provider", dataProviderClass = UserDataProvider.class)
