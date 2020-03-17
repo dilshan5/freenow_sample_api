@@ -1,6 +1,7 @@
 package com.freenow.sample.api.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.freenow.sample.api.common.Constant;
 import com.freenow.sample.api.common.LoggerUtil;
 import io.restassured.response.Response;
 
@@ -36,11 +37,13 @@ public class ResponseUtil {
     }
 
     /**
+     * Split the response StatusLine to get response message
+     * eg: HTTP/1.1 404 Not Found
      * @param response
      * @return status message
      */
     public static String getResponseStatus(Response response) {
-        return response.getStatusLine().split("HTTP/1.1\\s\\d{3}\\s")[1].toString();
+        return response.getStatusLine().split(Constant.RESPONSE_MESSAGE_PATTERN)[1].toString();
     }
 
     /**

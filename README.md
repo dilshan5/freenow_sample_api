@@ -9,6 +9,11 @@ This test uses a number of open source projects to work properly:
 * https://circleci.com/ - Continuous Integration tool
 * https://jsonplaceholder.typicode.com/ - Endpoints that are used in this porject
 
+##Clone the repo into a suitable folder:
+```sh
+$ git clone https://github.com/dilshan5/freenow_sample_api.git
+```
+
 ### Installation
 This requires [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html) v1.8 to run.
 

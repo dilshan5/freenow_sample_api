@@ -1,18 +1,19 @@
 package com.freenow.sample.api.functions;
 
-import com.freenow.sample.api.common.HTTPRequestMethods;
-import com.freenow.sample.api.common.LoggerUtil;
-import com.freenow.sample.api.common.RestUtil;
-import com.freenow.sample.api.common.URIs;
+import com.freenow.sample.api.common.*;
 import com.freenow.sample.api.response.models.CommentsModel.CommentDetails;
 import com.freenow.sample.api.util.HeadersUtil;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommentsFunctions {
     private static int[] commentsIDList;
+    private static Pattern pattern;
+    private static Matcher matcher;
 
     /**
      * @param postID - send any type of postIDs instead Integer only
@@ -40,5 +41,27 @@ public class CommentsFunctions {
 
         }
         return commentsIDList;
+    }
+
+    /**
+     * Acceptable email prefix formats (User Name):
+     *      Only letters (a-z), numbers (0-9), underscores (_) and periods (.) are allowed.
+     *      The first character of username must be an ASCII letter (a-z) or number (0-9).
+     *      Can not end with periods (.) or dash (-)
+     * Acceptable email domain formats:
+     *     Allowed characters: letters, numbers, dashes.
+     * Acceptable email Top-level domains (TLD) formats:
+     *     The last portion of the domain must be at 2-6 characters, for example: .com, .org, .cc
+     * Acceptable email sub domain formats:
+     *      Must be 2-6 letters (a-z) OR unlimited characters (a-zA-Z0-9)
+     *      Can have multiple sub domains
+     *      last sub domain must be 2-6 letters (a-z), for example: .com
+     * @param emailAddress
+     * @return
+     */
+    public static boolean isValidEmailAddress(String emailAddress) {
+        pattern = Pattern.compile(Constant.EMAIL_PATTERN);
+        matcher = pattern.matcher(emailAddress);
+        return matcher.matches();
     }
 }

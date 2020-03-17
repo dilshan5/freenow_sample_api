@@ -71,19 +71,18 @@ public class CommentsDetailTest extends TestBase {
     }
 
     @Parameters({"postID"})
-    @Test(description = "ID-008", alwaysRun = true)
-    public static void testVerifyEmailAddress(@Optional("3") int postID) {
+    @Test(description = "ID-008")
+    public static void testVerifyEmailAddress(@Optional("21") int postID) {
         SoftAssert softAssert = new SoftAssert();
+        boolean isValid = false;
         testGetCommentsWithValidPostID(postID);
         for (CommentDetails comment : (CommentDetails[]) commentsDetails) {
-            softAssert.assertTrue(isValidEmailAddress(comment.getEmail()), "Found Invalid email address: " + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
+            isValid = CommentsFunctions.isValidEmailAddress(comment.getEmail());
+            softAssert.assertTrue(isValid, "Found Invalid email address: " + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
+            if (isValid)
+                LoggerUtil.logINFO("Verified Email address: " + comment.getEmail() + " as a valid format.");
         }
         softAssert.assertAll();
-    }
-
-    private static boolean isValidEmailAddress(String emailAddress) {
-
-        return true;
     }
 
 }
