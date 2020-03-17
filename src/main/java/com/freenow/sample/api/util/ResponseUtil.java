@@ -40,7 +40,7 @@ public class ResponseUtil {
      * @return status message
      */
     public static String getResponseStatus(Response response) {
-        return response.getStatusLine().split(" ")[2];
+        return response.getStatusLine().split("HTTP/1.1\\s\\d{3}\\s")[1].toString();
     }
 
     /**

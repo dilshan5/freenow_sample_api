@@ -34,7 +34,7 @@ public class UserFunctions {
      * @param userName
      * @return user details object
      */
-    public static Object[] getAllUsers(){
+    public static Object[] getAllUserDetails(){
         LoggerUtil.logINFO("REQUEST -> UserFunctions.get all the users: ");
         Response response = RestUtil.send(HeadersUtil.getJsonHeaders(),"", URIs.USER_PATH, HTTPRequestMethods.GET,null);
 

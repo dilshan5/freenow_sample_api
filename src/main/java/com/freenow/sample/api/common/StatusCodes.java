@@ -7,4 +7,5 @@ public class StatusCodes {
 
     public static final int SUCCESS_200_CODE = 200;
     public static final int BAD_REQUESTS_400_CODE = 400;
+    public static final int NOT_FOUND_404_CODE = 404;
 }

@@ -1,10 +1,13 @@
 package com.freenow.sample.api.tests.functionalTest;
 
+import com.freenow.sample.api.common.HTTPRequestMethods;
 import com.freenow.sample.api.common.LoggerUtil;
+import com.freenow.sample.api.common.RestUtil;
 import com.freenow.sample.api.common.StatusCodes;
 import com.freenow.sample.api.functions.UserFunctions;
 import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.UserModel.UserDetails;
+import com.freenow.sample.api.util.HeadersUtil;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
@@ -78,6 +81,18 @@ public class UserDetailTest extends TestBase {
 
         softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
+        // Verify the response Error message
+        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
+        softAssert.assertAll();
+    }
+
+    @Test(description = "ID-009")
+    public static void testGetUserWithInvalidEndpoint() {
+        SoftAssert softAssert = new SoftAssert();
+        Response response = RestUtil.send(HeadersUtil.getJsonHeaders(),"", "user", HTTPRequestMethods.GET,null);
+
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.NOT_FOUND_404_CODE, "ERROR : Response status code should be 404.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Not Found", "ERROR : Expected status message: Not Found. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
         softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
         softAssert.assertAll();
