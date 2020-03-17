@@ -21,10 +21,10 @@ public class LoggerUtil {
             logger.log(Level.SEVERE, logMessage);
     }
 
-    public static void logWARNING(String logMessage, Throwable throwable) {
+/*    public static void logWARNING(String logMessage, Throwable throwable) {
         if (throwable != null)
             logger.log(Level.WARNING, logMessage, throwable);
         else
             logger.log(Level.WARNING, logMessage);
-    }
+    }*/
 }

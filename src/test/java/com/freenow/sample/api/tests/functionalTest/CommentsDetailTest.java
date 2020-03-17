@@ -8,6 +8,7 @@ import com.freenow.sample.api.response.models.CommentsModel.CommentDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -38,13 +39,18 @@ public class CommentsDetailTest extends TestBase {
         SoftAssert softAssert = new SoftAssert();
         Response response = CommentsFunctions.searchCommentsByPostID(postID);
         if (ResponseUtil.getResponseStatusCode(response) == StatusCodes.SUCCESS_200_CODE) {
-            // map the response to Comment Details object
-            commentsDetails = ResponseUtil.getObject(response.asString(), CommentDetails[].class);
+            try {
+                // map the response to Comment Details object
+                commentsDetails = ResponseUtil.getObject(response.asString(), CommentDetails[].class);
+            } catch (Exception ex) {
+                // Json Schema validation
+                Assert.fail("ERROR : Returned invalid JSON Schema for the Comment details response.");
+            }
             //Get list of comments IDs
             commentsIDList = CommentsFunctions.getCommentIDsList(commentsDetails);
         }
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), 200, "ERROR : Response status code should be 200.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
         softAssert.assertNotNull(commentsIDList, "ERROR : Unable to find a Comment in the Post ID: " + postID + ". Please check again.");
         softAssert.assertAll();
@@ -56,7 +62,7 @@ public class CommentsDetailTest extends TestBase {
         SoftAssert softAssert = new SoftAssert();
         Response response = CommentsFunctions.searchCommentsByPostID(postID);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), 400, "ERROR : Response status code should be 400.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
         softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");

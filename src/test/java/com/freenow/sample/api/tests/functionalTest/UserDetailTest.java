@@ -8,6 +8,7 @@ import com.freenow.sample.api.response.models.UserModel.UserDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -46,15 +47,21 @@ public class UserDetailTest extends TestBase {
         SoftAssert softAssert = new SoftAssert();
         Response response = UserFunctions.searchUserByName(userName);
         if (ResponseUtil.getResponseStatusCode(response) == StatusCodes.SUCCESS_200_CODE) {
-            // map the response to User Details object
-            userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
+            try {
+                // map the response to User Details object
+                userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
+            } catch (Exception ex) {
+                // Json Schema validation
+                Assert.fail("ERROR : Returned invalid JSON Schema for the User details response.");
+            }
+
             //get User ID
             userID = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getId() : null);
             //get User Name
             responseUserName = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getUsername() : null);
         }
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), 200, "ERROR : Response status code should be 200.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status: OK. But got status: " + ResponseUtil.getResponseStatus(response));
         // Validate whether expected user details was returned
         softAssert.assertEquals(responseUserName, userName, "ERROR : User Name mismatched found in the returned JSON response.");
@@ -69,7 +76,7 @@ public class UserDetailTest extends TestBase {
         SoftAssert softAssert = new SoftAssert();
         Response response = UserFunctions.searchUserByName(userName);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), 400, "ERROR : Response status code should be 400.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
         softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");

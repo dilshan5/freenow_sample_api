@@ -8,6 +8,7 @@ import com.freenow.sample.api.response.models.PostModel.PostDetails;
 import com.freenow.sample.api.util.ResponseUtil;
 import com.freenow.sample.api.util.TestBase;
 import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -44,13 +45,18 @@ public class PostDetailTest extends TestBase {
         SoftAssert softAssert = new SoftAssert();
         Response response = PostFunctions.searchPostByUserID(userID);
         if (ResponseUtil.getResponseStatusCode(response) == StatusCodes.SUCCESS_200_CODE) {
-            // map the response to Post Details object
-            postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
+            try {
+                // map the response to Post Details object
+                postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
+            } catch (Exception ex) {
+                // Json Schema validation
+                Assert.fail("ERROR : Returned invalid JSON Schema for the Post details response.");
+            }
             //get List of Post IDs
             postIDList = PostFunctions.getPostIDsList(postDetails);
         }
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), 200, "ERROR : Response status code should be 200.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
         softAssert.assertNotNull(postIDList, "ERROR : Unable to find a POST ID : " + userID + ". Please check again.");
         softAssert.assertAll();
@@ -63,7 +69,7 @@ public class PostDetailTest extends TestBase {
         SoftAssert softAssert = new SoftAssert();
         Response response = PostFunctions.searchPostByUserID(userID);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), 400, "ERROR : Response status code should be 400.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
         softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
