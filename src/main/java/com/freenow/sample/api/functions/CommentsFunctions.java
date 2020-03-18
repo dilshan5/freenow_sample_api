@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class CommentsFunctions {
     private static int[] commentsIDList;
+    private static int[] postIDList;
     private static Pattern pattern;
     private static Matcher matcher;
 
@@ -49,13 +50,14 @@ public class CommentsFunctions {
      *      The first character of username must be an ASCII letter (a-z) or number (0-9).
      *      Can not end with periods (.) or dash (-)
      * Acceptable email domain formats:
-     *     Allowed characters: letters, numbers, dashes.
+     *      Allowed characters: letters, numbers, dashes.
      * Acceptable email Top-level domains (TLD) formats:
-     *     The last portion of the domain must be at 2-6 characters, for example: .com, .org, .cc
+     *      The last portion of the domain must be at 2-6 characters, for example: .com, .org, .cc
      * Acceptable email sub domain formats:
      *      Must be 2-6 letters (a-z) OR unlimited characters (a-zA-Z0-9)
-     *      Can have multiple sub domains
+     *       Can have multiple sub domains
      *      last sub domain must be 2-6 letters (a-z), for example: .com
+     *
      * @param emailAddress
      * @return
      */
@@ -64,4 +66,22 @@ public class CommentsFunctions {
         matcher = pattern.matcher(emailAddress);
         return matcher.matches();
     }
+
+    /**
+     * Get the Post ID for each Comment
+     *
+     * @param commentDetails
+     * @return
+     */
+    public static int[] getPostIDsForEachComment(Object[] commentDetails) {
+        //initialize array
+        postIDList = ((commentDetails.length != 0) ? new int[commentDetails.length] : null);
+        //get Post IDs List
+        for (int i = 0; i < commentDetails.length; i++) {
+            postIDList[i] = ((CommentDetails) commentDetails[i]).getPostId();
+
+        }
+        return postIDList;
+    }
+
 }

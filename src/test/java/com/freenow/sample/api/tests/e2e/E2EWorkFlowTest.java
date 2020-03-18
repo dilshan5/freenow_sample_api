@@ -21,6 +21,7 @@ public class E2EWorkFlowTest extends TestBase {
         UserDetailTest.testGetUserWithValidName(userName);
         //Get all the Post IDs which has been posted by above user
         PostDetailTest.testGetPostWithValidUserID(UserDetailTest.getUserID());
+        //Note: An email address can duplicate, because a person can type several comments for the same Post
         //Verify the email address format in each comment, for each post
         for (int postId : PostDetailTest.getPostIDList()) {
             CommentsDetailTest.testVerifyEmailAddress(postId);

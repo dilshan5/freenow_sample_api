@@ -6,6 +6,7 @@ import com.freenow.sample.api.common.LoggerUtil;
 import io.restassured.response.Response;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 /**
  * Handle all the responses in this class
@@ -39,6 +40,7 @@ public class ResponseUtil {
     /**
      * Split the response StatusLine to get response message
      * eg: HTTP/1.1 404 Not Found
+     *
      * @param response
      * @return status message
      */
@@ -52,6 +54,59 @@ public class ResponseUtil {
      */
     public static String getResponseBody(Response response) {
         return response.asString();
+    }
+
+    /**
+     * HashSet doesn't allow duplicates elements
+     *
+     * @param list
+     * @return true if  duplicate ID found in the list
+     */
+    public static boolean isIDsDuplicate(int[] list) {
+        boolean isDuplicate = false;
+        HashSet<Integer> set = new HashSet<Integer>();
+        HashSet<Integer> duplicateIDs = new HashSet<Integer>();
+        if (list != null) {
+            for (Integer duplicate : list) {
+                //If add() returns false, that ID is a duplicate
+                if (set.add(duplicate) == false) {
+                    isDuplicate = true;
+                    duplicateIDs.add(duplicate);
+                }
+            }
+        }
+        if (isDuplicate)
+            LoggerUtil.logINFO("Found following duplicate IDs: " + duplicateIDs);
+
+        return isDuplicate;
+    }
+
+    /**
+     * Check whether List of IDs contain any different ID other than searched ID
+     * Should contain only element which is the searched ID
+     *
+     * @param list
+     * @param expectedID
+     * @return
+     */
+    public static boolean isIdenticalIds(int[] list, Object expectedID) {
+        boolean isIdentical = true;
+        HashSet<Integer> set = new HashSet<Integer>();
+        if (list != null) {
+            for (Integer duplicate : list) {
+                //If add() returns false, that ID is a duplicate
+                if (set.add(duplicate) == false) {
+                }
+            }
+            // should have only one ID exists which was search ID in the query
+            // expected ID should match with the returned list of IDs
+            if ((set.size() > 1) || !(set.contains(expectedID))) {
+                isIdentical = false;
+                LoggerUtil.logINFO("ERROR : Received details for following irrelevant IDs: " + set + " in the JSON response.");
+            }
+
+        }
+        return isIdentical;
     }
 
 }

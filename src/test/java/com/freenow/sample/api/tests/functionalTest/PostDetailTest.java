@@ -19,7 +19,12 @@ import org.testng.asserts.SoftAssert;
 public class PostDetailTest extends TestBase {
 
     private static int[] postIDList;
+    private static int[] userIDList;
     private static Object[] postDetails;
+
+    public static void setUserIDList(int[] userIDList) {
+        PostDetailTest.userIDList = userIDList;
+    }
 
     public static void setPostIDList(int[] postIDList) {
         PostDetailTest.postIDList = postIDList;
@@ -37,6 +42,7 @@ public class PostDetailTest extends TestBase {
     public void init() {
         setPostDetails(null);
         setPostIDList(null);
+        setUserIDList(null);
     }
 
 
@@ -48,17 +54,25 @@ public class PostDetailTest extends TestBase {
             try {
                 // map the response to Post Details object
                 postDetails = ResponseUtil.getObject(response.asString(), PostDetails[].class);
-            } catch (Exception ex) {
+            } catch (Exception e) {
+                LoggerUtil.logERROR(e.getMessage(), e);
                 // Json Schema validation
                 Assert.fail("ERROR : Returned invalid JSON Schema for the Post details response.");
             }
             //get List of Post IDs
             postIDList = PostFunctions.getPostIDsList(postDetails);
+            //get List of User ID for each post
+            userIDList = PostFunctions.getUserIDsForEachPost(postDetails);
+
         }
 
         softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
-        softAssert.assertNotNull(postIDList, "ERROR : Unable to find a POST ID : " + userID + ". Please check again.");
+        softAssert.assertNotNull(postIDList, "ERROR : POST ID is missing in the response for User ID : " + userID);
+        //Verify response only contain unique Post IDs for the given user. So the Post IDs should be unique always
+        softAssert.assertFalse(ResponseUtil.isIDsDuplicate(postIDList), "ERROR : Found duplicate Post IDs in the response.");
+        //Verify the response contain Post details which belongs to the requested User only. So User IDs should be same.
+        softAssert.assertTrue(ResponseUtil.isIdenticalIds(userIDList, userID), "ERROR : Received details for irrelevant User IDs:");
         softAssert.assertAll();
         LoggerUtil.logINFO("Verified Post with ID: " + userID.toString());
 

@@ -18,10 +18,15 @@ import org.testng.asserts.SoftAssert;
 public class CommentsDetailTest extends TestBase {
 
     private static int[] commentsIDList;
+    private static int[] postIDList;
     private static Object[] commentsDetails;
 
     public static void setCommentsIDList(int[] commentsIDList) {
         CommentsDetailTest.commentsIDList = commentsIDList;
+    }
+
+    public static void setPostIDList(int[] postIDList) {
+        CommentsDetailTest.postIDList = postIDList;
     }
 
     public static void setCommentsDetails(Object[] commentsDetails) {
@@ -32,6 +37,7 @@ public class CommentsDetailTest extends TestBase {
     public void init() {
         setCommentsDetails(null);
         setCommentsIDList(null);
+        setPostIDList(null);
     }
 
     @Test(description = "ID-006", dataProvider = "valid-post-ids-provider", dataProviderClass = PostDataProvider.class)
@@ -42,17 +48,24 @@ public class CommentsDetailTest extends TestBase {
             try {
                 // map the response to Comment Details object
                 commentsDetails = ResponseUtil.getObject(response.asString(), CommentDetails[].class);
-            } catch (Exception ex) {
+            } catch (Exception e) {
                 // Json Schema validation
+                LoggerUtil.logERROR(e.getMessage(), e);
                 Assert.fail("ERROR : Returned invalid JSON Schema for the Comment details response.");
             }
             //Get list of comments IDs
             commentsIDList = CommentsFunctions.getCommentIDsList(commentsDetails);
+            //get List of Post ID for each comment
+            postIDList = CommentsFunctions.getPostIDsForEachComment(commentsDetails);
         }
 
         softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
-        softAssert.assertNotNull(commentsIDList, "ERROR : Unable to find a Comment in the Post ID: " + postID + ". Please check again.");
+        softAssert.assertNotNull(commentsIDList, "ERROR : Unable to find any Comment in the Post ID: " + postID + ". Please check again.");
+        //Verify response only contain unique Comments IDs for the given a Post. So the Comment IDs should be unique always
+        softAssert.assertFalse(ResponseUtil.isIDsDuplicate(commentsIDList), "ERROR : Found duplicate Comments IDs in the response.");
+        //Verify the response contain comments details which belongs to the requested Post only. So Post IDs should be same.
+        softAssert.assertTrue(ResponseUtil.isIdenticalIds(postIDList, postID), "ERROR : Received details for irrelevant Post IDs:");
         softAssert.assertAll();
         LoggerUtil.logINFO("Verified Comments found for postID: " + postID.toString());
     }

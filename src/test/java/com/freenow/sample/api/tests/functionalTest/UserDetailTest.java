@@ -53,7 +53,8 @@ public class UserDetailTest extends TestBase {
             try {
                 // map the response to User Details object
                 userDetails = ResponseUtil.getObject(response.asString(), UserDetails[].class);
-            } catch (Exception ex) {
+            } catch (Exception e) {
+                LoggerUtil.logERROR(e.getMessage(), e);
                 // Json Schema validation
                 Assert.fail("ERROR : Returned invalid JSON Schema for the User details response.");
             }

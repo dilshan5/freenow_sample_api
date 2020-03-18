@@ -14,6 +14,7 @@ import java.util.Map;
 public class PostFunctions {
 
     private static int[] postIDList;
+    private static int[] userIDList;
 
     /**
      * @param send any type of userIDs instead Long type only
@@ -42,6 +43,23 @@ public class PostFunctions {
 
         }
         return postIDList;
+    }/**/
+
+    /**
+     * Get the User ID for each Post
+     *
+     * @param postDetails
+     * @return
+     */
+    public static int[] getUserIDsForEachPost(Object[] postDetails) {
+        //initialize array
+        userIDList = ((postDetails.length != 0) ? new int[postDetails.length] : null);
+        //get Post IDs List
+        for (int i = 0; i < postDetails.length; i++) {
+            userIDList[i] = ((PostDetails) postDetails[i]).getUserId();
+
+        }
+        return userIDList;
     }
 
 
