@@ -90,7 +90,7 @@ public class CommentsDetailTest extends TestBase {
         boolean isValid = false;
         testGetCommentsWithValidPostID(postID);
         for (CommentDetails comment : (CommentDetails[]) commentsDetails) {
-            isValid = CommentsFunctions.isValidEmailAddress(comment.getEmail());
+            isValid = ResponseUtil.isValidEmailAddress(comment.getEmail());
             softAssert.assertTrue(isValid, "Found Invalid email address: " + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
             if (isValid)
                 LoggerUtil.logINFO("Verified Email address: " + comment.getEmail() + " as a valid format.");

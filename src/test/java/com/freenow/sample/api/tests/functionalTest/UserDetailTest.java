@@ -21,18 +21,24 @@ public class UserDetailTest extends TestBase {
     private static Long userID;
     private static Object[] userDetails;
     private static String responseUserName;
+    private static String responseUserEmailAddress;
 
     public static void setUserID(Long userID) {
         UserDetailTest.userID = userID;
+    }
+
+    public static void setResponseUserName(String responseUserName) {
+        UserDetailTest.responseUserName = responseUserName;
+    }
+
+    public static void setResponseUserEmailAddress(String responseUserEmailAddress) {
+        UserDetailTest.responseUserEmailAddress = responseUserEmailAddress;
     }
 
     public static Long getUserID() {
         return userID;
     }
 
-    public static void setUserName(String userName) {
-        UserDetailTest.responseUserName = userName;
-    }
 
     public static void setUserDetails(Object[] userDetails) {
         UserDetailTest.userDetails = userDetails;
@@ -42,7 +48,8 @@ public class UserDetailTest extends TestBase {
     public void init() {
         setUserDetails(null);
         setUserID(null);
-        setUserName(null);
+        setResponseUserName(null);
+        setResponseUserEmailAddress(null);
     }
 
     @Test(description = "ID-001", dataProvider = "valid-user-data-provider", dataProviderClass = UserDataProvider.class)
@@ -63,6 +70,8 @@ public class UserDetailTest extends TestBase {
             userID = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getId() : null);
             //get User Name
             responseUserName = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getUsername() : null);
+            //get User Email address
+            responseUserEmailAddress = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getEmail() : null);
         }
 
         softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
@@ -71,6 +80,8 @@ public class UserDetailTest extends TestBase {
         softAssert.assertEquals(responseUserName, userName, "ERROR : User Name mismatched found in the returned JSON response.");
         // Check the UserID is not empty
         softAssert.assertNotNull(userID, "ERROR : Unable to find  UserID in JSON response.");
+        // Check for user email address format
+        softAssert.assertTrue(ResponseUtil.isValidEmailAddress(responseUserEmailAddress), "ERROR : Invalid Email address format found.");
         softAssert.assertAll();
         LoggerUtil.logINFO("Verified user '" + userName + "' exists with the userID " + userID);
     }
@@ -90,7 +101,7 @@ public class UserDetailTest extends TestBase {
     @Test(description = "ID-009")
     public static void testGetUserWithInvalidEndpoint() {
         SoftAssert softAssert = new SoftAssert();
-        Response response = RestUtil.send(HeadersUtil.getJsonHeaders(),"", "user", HTTPRequestMethods.GET,null);
+        Response response = RestUtil.send(HeadersUtil.getJsonHeaders(), "", "user", HTTPRequestMethods.GET, null);
 
         softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.NOT_FOUND_404_CODE, "ERROR : Response status code should be 404.");
         softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Not Found", "ERROR : Expected status message: Not Found. But got status message: " + ResponseUtil.getResponseStatus(response));
