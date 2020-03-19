@@ -115,25 +115,29 @@ public class ResponseUtil {
 
     /**
      * Acceptable email prefix formats (User Name):
-     *      Only letters (a-z), numbers (0-9), underscores (_) and periods (.) are allowed.
-     *      The first character of username must be an ASCII letter (a-z) or number (0-9).
-     *      Can not end with periods (.) or dash (-)
+     * Only letters (a-z), numbers (0-9), underscores (_) and periods (.) are allowed.
+     * The first character of username must be an ASCII letter (a-z) or number (0-9).
+     * Can not end with periods (.) or dash (-)
      * Acceptable email domain formats:
-     *      Allowed characters: letters, numbers, dashes.
+     * Allowed characters: letters, numbers, dashes.
      * Acceptable email Top-level domains (TLD) formats:
-     *      The last portion of the domain must be at 2-6 characters, for example: .com, .org, .cc
+     * The last portion of the domain must be at 2-6 characters, for example: .com, .org, .cc
      * Acceptable email sub domain formats:
-     *      Must be 2-6 letters (a-z) OR unlimited characters (a-zA-Z0-9)
-     *       Can have multiple sub domains
-     *      last sub domain must be 2-6 letters (a-z), for example: .com
+     * Must be 2-6 letters (a-z) OR unlimited characters (a-zA-Z0-9)
+     * Can have multiple sub domains
+     * last sub domain must be 2-6 letters (a-z), for example: .com
      *
      * @param emailAddress
      * @return
      */
     public static boolean isValidEmailAddress(String emailAddress) {
+        boolean isValid = false;
         pattern = Pattern.compile(Constant.EMAIL_PATTERN);
-        matcher = pattern.matcher(emailAddress);
-        return matcher.matches();
+        if (emailAddress != null) {
+            matcher = pattern.matcher(emailAddress);
+            isValid = matcher.matches();
+        }
+        return isValid;
     }
 
 }

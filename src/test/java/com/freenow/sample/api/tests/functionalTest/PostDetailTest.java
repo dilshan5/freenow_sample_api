@@ -1,5 +1,6 @@
 package com.freenow.sample.api.tests.functionalTest;
 
+import com.freenow.sample.api.common.Constant;
 import com.freenow.sample.api.common.LoggerUtil;
 import com.freenow.sample.api.common.StatusCodes;
 import com.freenow.sample.api.functions.PostFunctions;
@@ -46,7 +47,8 @@ public class PostDetailTest extends TestBase {
     }
 
 
-    @Test(description = "ID-003", dataProvider = "valid-user-ids-provider", dataProviderClass = UserDataProvider.class)
+    @Test(description = "ID-003 - Verify User can GET Post details by valid userID.",
+            dataProvider = "valid-user-ids-provider", dataProviderClass = UserDataProvider.class, groups = {Constant.BVT})
     public static void testGetPostWithValidUserID(Object userID) {
         SoftAssert softAssert = new SoftAssert();
         Response response = PostFunctions.searchPostByUserID(userID);
@@ -66,27 +68,35 @@ public class PostDetailTest extends TestBase {
 
         }
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE,
+                "ERROR : Response status code should be 200.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK",
+                "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
         softAssert.assertNotNull(postIDList, "ERROR : POST ID is missing in the response for User ID : " + userID);
         //Verify response only contain unique Post IDs for the given user. So the Post IDs should be unique always
-        softAssert.assertFalse(ResponseUtil.isIDsDuplicate(postIDList), "ERROR : Found duplicate Post IDs in the response.");
+        softAssert.assertFalse(ResponseUtil.isIDsDuplicate(postIDList),
+                "ERROR : Found duplicate Post IDs in the response.");
         //Verify the response contain Post details which belongs to the requested User only. So User IDs should be same.
-        softAssert.assertTrue(ResponseUtil.isIdenticalIds(userIDList, userID), "ERROR : Received details for irrelevant User IDs:");
+        softAssert.assertTrue(ResponseUtil.isIdenticalIds(userIDList, userID),
+                "ERROR : Received details for irrelevant User IDs:");
         softAssert.assertAll();
         LoggerUtil.logINFO("Verified Post with ID: " + userID.toString());
 
     }
 
-    @Test(description = "ID-004", dataProvider = "invalid-user-ids-provider", dataProviderClass = UserDataProvider.class)
+    @Test(description = "ID-004 - Verify User GET correct error response for Post details when search by invalid userID.",
+            dataProvider = "invalid-user-ids-provider", dataProviderClass = UserDataProvider.class, groups = {Constant.REGRESSION})
     public static void testGetPostWithInvalidUserID(Object userID) {
         SoftAssert softAssert = new SoftAssert();
         Response response = PostFunctions.searchPostByUserID(userID);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE,
+                "ERROR : Response status code should be 400.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request",
+                "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
-        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
+        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message",
+                "ERROR : Invalid response Error message.");
         softAssert.assertAll();
 
     }

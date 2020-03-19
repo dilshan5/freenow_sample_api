@@ -1,5 +1,6 @@
 package com.freenow.sample.api.util;
 
+import com.freenow.sample.api.common.Constant;
 import com.freenow.sample.api.common.LoggerUtil;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -13,7 +14,7 @@ import java.lang.reflect.Method;
  */
 public class TestBase {
 
-    @BeforeClass
+    @BeforeClass(groups = {Constant.BVT, Constant.REGRESSION})
     public void initClass() {
         RequestUtil.setRequestBaseUrls();
         System.out.println("====== Start Running Test Class " + this.getClass().toString() + " =========");

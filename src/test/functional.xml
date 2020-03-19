@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="functional" verbose="10" configfailurepolicy="continue" data-provider-thread-count="4">
+<suite name="functional" verbose="10" configfailurepolicy="continue">
     <test name="functional">
+        <groups>
+            <run>
+                <include name="bvt"/>
+            </run>
+        </groups>
         <classes>
             <class name="com.freenow.sample.api.tests.functionalTest.UserDetailTest"/>
             <class name="com.freenow.sample.api.tests.functionalTest.PostDetailTest"/>

@@ -1,5 +1,6 @@
 package com.freenow.sample.api.tests.functionalTest;
 
+import com.freenow.sample.api.common.Constant;
 import com.freenow.sample.api.common.LoggerUtil;
 import com.freenow.sample.api.common.StatusCodes;
 import com.freenow.sample.api.functions.CommentsFunctions;
@@ -16,7 +17,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 /**
- *  Test cases which belongs to Comment endpoint
+ * Test cases which belongs to Comment endpoint
  */
 public class CommentsDetailTest extends TestBase {
 
@@ -43,7 +44,8 @@ public class CommentsDetailTest extends TestBase {
         setPostIDList(null);
     }
 
-    @Test(description = "ID-006", dataProvider = "valid-post-ids-provider", dataProviderClass = PostDataProvider.class)
+    @Test(description = "ID-006 - Verify User can GET Comment details by valid postID.",
+            dataProvider = "valid-post-ids-provider", dataProviderClass = PostDataProvider.class, groups = {Constant.BVT})
     public static void testGetCommentsWithValidPostID(Object postID) {
         SoftAssert softAssert = new SoftAssert();
         Response response = CommentsFunctions.searchCommentsByPostID(postID);
@@ -62,41 +64,54 @@ public class CommentsDetailTest extends TestBase {
             postIDList = CommentsFunctions.getPostIDsForEachComment(commentsDetails);
         }
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
-        softAssert.assertNotNull(commentsIDList, "ERROR : Unable to find any Comment in the Post ID: " + postID + ". Please check again.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE,
+                "ERROR : Response status code should be 200.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK",
+                "ERROR : Expected status message: OK. But got status message: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertNotNull(commentsIDList,
+                "ERROR : Unable to find any Comment in the Post ID: " + postID + ". Please check again.");
         //Verify response only contain unique Comments IDs for the given a Post. So the Comment IDs should be unique always
-        softAssert.assertFalse(ResponseUtil.isIDsDuplicate(commentsIDList), "ERROR : Found duplicate Comments IDs in the response.");
+        softAssert.assertFalse(ResponseUtil.isIDsDuplicate(commentsIDList),
+                "ERROR : Found duplicate Comments IDs in the response.");
         //Verify the response contain comments details which belongs to the requested Post only. So Post IDs should be same.
-        softAssert.assertTrue(ResponseUtil.isIdenticalIds(postIDList, postID), "ERROR : Received details for irrelevant Post IDs:");
+        softAssert.assertTrue(ResponseUtil.isIdenticalIds(postIDList, postID),
+                "ERROR : Received details for irrelevant Post IDs:");
         softAssert.assertAll();
         LoggerUtil.logINFO("Verified Comments found for postID: " + postID.toString());
     }
 
-    @Test(description = "ID-007", dataProvider = "invalid-post-ids-provider", dataProviderClass = PostDataProvider.class)
+    @Test(description = "ID-007 - Verify User GET correct error response for Comment details when search by invalid postID.",
+            dataProvider = "invalid-post-ids-provider", dataProviderClass = PostDataProvider.class, groups = {Constant.REGRESSION})
     public static void testGetCommentsWithInvalidPostID(Object postID) {
         SoftAssert softAssert = new SoftAssert();
         Response response = CommentsFunctions.searchCommentsByPostID(postID);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE,
+                "ERROR : Response status code should be 400.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request",
+                "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
-        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
+        softAssert.assertEquals(ResponseUtil.getResponseBody(response),
+                "Expected Error message", "ERROR : Invalid response Error message.");
         softAssert.assertAll();
 
     }
 
     @Parameters({"postID"})
-    @Test(description = "ID-008 - Check all Email addresses format for given PostID")
+    @Test(description = "ID-008 - Verify all Email addresses format in all comments for given PostID.", groups = {Constant.BVT})
     public static void testVerifyEmailAddress(@Optional("21") int postID) {
         SoftAssert softAssert = new SoftAssert();
         boolean isValid = false;
+        //Get comment details for a given postID
         testGetCommentsWithValidPostID(postID);
+        //Check email address for all the comments which belong to the given Post
         for (CommentDetails comment : (CommentDetails[]) commentsDetails) {
             isValid = ResponseUtil.isValidEmailAddress(comment.getEmail());
-            softAssert.assertTrue(isValid, "Found Invalid email address: " + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
+            softAssert.assertTrue(isValid, "Found Invalid email address: "
+                    + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
             if (isValid)
-                LoggerUtil.logINFO("Verified Email address: " + comment.getEmail() + " as a valid format in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
+                LoggerUtil.logINFO("Verified Email address: "
+                        + comment.getEmail() + " as a valid format in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
         }
         softAssert.assertAll();
     }

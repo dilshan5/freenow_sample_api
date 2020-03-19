@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 public class E2EWorkFlowTest extends TestBase {
 
     @Parameters({"userName"})
-    @Test(description = "ID-005")
+    @Test(description = "ID-005 - E2E work flow to verify email address format in the comments for the posts made by given user.")
     public static void testEmailVerificationInComments(@Optional("Samantha") String userName) {
         //Get userID
         UserDetailTest.testGetUserWithValidName(userName);

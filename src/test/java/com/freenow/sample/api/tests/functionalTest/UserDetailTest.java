@@ -1,9 +1,6 @@
 package com.freenow.sample.api.tests.functionalTest;
 
-import com.freenow.sample.api.common.HTTPRequestMethods;
-import com.freenow.sample.api.common.LoggerUtil;
-import com.freenow.sample.api.common.RestUtil;
-import com.freenow.sample.api.common.StatusCodes;
+import com.freenow.sample.api.common.*;
 import com.freenow.sample.api.functions.UserFunctions;
 import com.freenow.sample.api.requests.data.UserDataProvider;
 import com.freenow.sample.api.response.models.UserModel.UserDetails;
@@ -55,7 +52,8 @@ public class UserDetailTest extends TestBase {
         setResponseUserEmailAddress(null);
     }
 
-    @Test(description = "ID-001", dataProvider = "valid-user-data-provider", dataProviderClass = UserDataProvider.class)
+    @Test(description = "ID-001 - Verify User can GET User details by valid Name.", dataProvider = "valid-user-data-provider",
+            dataProviderClass = UserDataProvider.class, groups = {Constant.BVT})
     public static void testGetUserWithValidName(Object userName) {
         SoftAssert softAssert = new SoftAssert();
         Response response = UserFunctions.searchUserByName(userName);
@@ -77,39 +75,49 @@ public class UserDetailTest extends TestBase {
             responseUserEmailAddress = ((userDetails.length != 0) ? ((UserDetails) userDetails[0]).getEmail() : null);
         }
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE, "ERROR : Response status code should be 200.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK", "ERROR : Expected status: OK. But got status: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.SUCCESS_200_CODE,
+                "ERROR : Response status code should be 200.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "OK",
+                "ERROR : Expected status: OK. But got status: " + ResponseUtil.getResponseStatus(response));
         // Validate whether expected user details was returned
         softAssert.assertEquals(responseUserName, userName, "ERROR : User Name mismatched found in the returned JSON response.");
         // Check the UserID is not empty
         softAssert.assertNotNull(userID, "ERROR : Unable to find  UserID in JSON response.");
         // Check for user email address format
-        softAssert.assertTrue(ResponseUtil.isValidEmailAddress(responseUserEmailAddress), "ERROR : Invalid Email address format found.");
+        softAssert.assertTrue(ResponseUtil.isValidEmailAddress(responseUserEmailAddress),
+                "ERROR : Invalid Email address format found.");
         softAssert.assertAll();
         LoggerUtil.logINFO("Verified user '" + userName + "' exists with the userID " + userID);
     }
 
-    @Test(description = "ID-002", dataProvider = "invalid-user-data-provider", dataProviderClass = UserDataProvider.class)
+    @Test(description = "ID-002 - Verify User GET correct error response for invalid Name search.", dataProvider = "invalid-user-data-provider",
+            dataProviderClass = UserDataProvider.class, groups = {Constant.REGRESSION})
     public static void testGetUserWithInvalidName(Object userName) {
         SoftAssert softAssert = new SoftAssert();
         Response response = UserFunctions.searchUserByName(userName);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE, "ERROR : Response status code should be 400.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request", "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.BAD_REQUESTS_400_CODE,
+                "ERROR : Response status code should be 400.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Bad Request",
+                "ERROR : Expected status message: Bad Request. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
-        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
+        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message",
+                "ERROR : Invalid response Error message.");
         softAssert.assertAll();
     }
 
-    @Test(description = "ID-009")
+    @Test(description = "ID-009 - Verify User GET correct error response for invalid Endpoint invoke.", groups = {Constant.REGRESSION})
     public static void testGetUserWithInvalidEndpoint() {
         SoftAssert softAssert = new SoftAssert();
         Response response = RestUtil.send(HeadersUtil.getJsonHeaders(), "", "user", HTTPRequestMethods.GET, null);
 
-        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.NOT_FOUND_404_CODE, "ERROR : Response status code should be 404.");
-        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Not Found", "ERROR : Expected status message: Not Found. But got status message: " + ResponseUtil.getResponseStatus(response));
+        softAssert.assertEquals(ResponseUtil.getResponseStatusCode(response), StatusCodes.NOT_FOUND_404_CODE,
+                "ERROR : Response status code should be 404.");
+        softAssert.assertEquals(ResponseUtil.getResponseStatus(response), "Not Found",
+                "ERROR : Expected status message: Not Found. But got status message: " + ResponseUtil.getResponseStatus(response));
         // Verify the response Error message
-        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message", "ERROR : Invalid response Error message.");
+        softAssert.assertEquals(ResponseUtil.getResponseBody(response), "Expected Error message",
+                "ERROR : Invalid response Error message.");
         softAssert.assertAll();
     }
 }
