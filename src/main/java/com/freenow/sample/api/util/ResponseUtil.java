@@ -1,6 +1,7 @@
 package com.freenow.sample.api.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.freenow.sample.api.common.Constant;
 import com.freenow.sample.api.common.LoggerUtil;
 import io.restassured.response.Response;
@@ -24,13 +25,13 @@ public class ResponseUtil {
      * @param className to map the response.
      * @return
      */
-    public static Object[] getObject(String response, Class c) {
+    public static Object[] getObject(String response, Class c) throws Exception {
         try {
             return (Object[]) new ObjectMapper().readValue(response, c);
         } catch (IOException e) {
             LoggerUtil.logERROR(e.getMessage(), e);
+            throw new Exception("Unable to convert JSON response in to valid Object.");
         }
-        return null;
     }
 
     /**
@@ -103,7 +104,7 @@ public class ResponseUtil {
             }
             // should have only one ID exists which was search ID in the query
             // expected ID should match with the returned list of IDs
-            if ((set.size() > 1) || !(set.contains(expectedID))) {
+            if ((set.size() > 1) || !(set.contains(Integer.parseInt(expectedID.toString())))) {
                 isIdentical = false;
                 LoggerUtil.logINFO("ERROR : Received details for following irrelevant IDs: " + set + " in the JSON response.");
             }

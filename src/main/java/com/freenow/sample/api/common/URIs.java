@@ -1,7 +1,8 @@
 package com.freenow.sample.api.common;
 
 /**
- * Contain all the URIs in the project
+ * Contain all the service,version and resource path in the project
+ * eg : https://{service}.apis.com/{version}/{resourcepath}
  */
 public class URIs {
 

@@ -2,6 +2,9 @@ package com.freenow.sample.api.requests.data;
 
 import org.testng.annotations.DataProvider;
 
+/**
+ *  All the positive and negative test data for User details
+ */
 public class UserDataProvider {
 
     @DataProvider(name = "valid-user-data-provider")

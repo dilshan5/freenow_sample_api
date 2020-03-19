@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 /**
- * This class used to test all the functions related to User Posts
+ * Test cases which belongs to Post endpoint
  */
 public class PostDetailTest extends TestBase {
 
@@ -39,7 +39,7 @@ public class PostDetailTest extends TestBase {
     }
 
     @BeforeMethod
-    public void init() {
+    public void PostDetailTest() {
         setPostDetails(null);
         setPostIDList(null);
         setUserIDList(null);

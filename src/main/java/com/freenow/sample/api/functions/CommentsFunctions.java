@@ -3,11 +3,15 @@ package com.freenow.sample.api.functions;
 import com.freenow.sample.api.common.*;
 import com.freenow.sample.api.response.models.CommentsModel.CommentDetails;
 import com.freenow.sample.api.util.HeadersUtil;
+import com.freenow.sample.api.util.RequestUtil;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * All the methods required in Comment details Test
+ */
 public class CommentsFunctions {
     private static int[] commentsIDList;
     private static int[] postIDList;
@@ -20,13 +24,15 @@ public class CommentsFunctions {
         LoggerUtil.logINFO("REQUEST -> PostFunctions.search user comments by Post ID: " + postID);
         Map<String, String> queryParameters = new HashMap<>();
         queryParameters.put("postId", postID.toString());
-        Response response = RestUtil.send(HeadersUtil.getJsonHeaders(), "", URIs.COMMENTS_PATH, HTTPRequestMethods.GET, queryParameters);
+        Response response = RequestUtil.send(HeadersUtil.getJsonHeaders(), "", URIs.COMMENTS_PATH, HTTPRequestMethods.GET, queryParameters);
 
         return response;
     }
 
     /**
-     * @param commentsDetails
+     * Get comment IDs for each Comment
+     *
+     * @param commentsDetails of the response
      * @return the list of CommentIDs
      */
     public static int[] getCommentIDsList(Object[] commentsDetails) {
@@ -44,8 +50,8 @@ public class CommentsFunctions {
     /**
      * Get the Post ID for each Comment
      *
-     * @param commentDetails
-     * @return
+     * @param commentDetails of the response
+     * @return the list of PostIDs
      */
     public static int[] getPostIDsForEachComment(Object[] commentDetails) {
         //initialize array

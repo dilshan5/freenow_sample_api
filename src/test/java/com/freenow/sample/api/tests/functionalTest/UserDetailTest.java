@@ -16,6 +16,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+/**
+ * Test cases which belongs to User endpoint
+ */
 public class UserDetailTest extends TestBase {
 
     private static Long userID;
@@ -45,7 +48,7 @@ public class UserDetailTest extends TestBase {
     }
 
     @BeforeMethod
-    public void init() {
+    public void UserDetailTest() {
         setUserDetails(null);
         setUserID(null);
         setResponseUserName(null);

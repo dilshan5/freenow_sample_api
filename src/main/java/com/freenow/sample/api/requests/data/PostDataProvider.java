@@ -2,6 +2,9 @@ package com.freenow.sample.api.requests.data;
 
 import org.testng.annotations.DataProvider;
 
+/**
+ * All the positive and negative test data for Post details
+ */
 public class PostDataProvider {
 
     @DataProvider(name = "valid-post-ids-provider")

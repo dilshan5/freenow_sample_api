@@ -8,6 +8,9 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
+/**
+ * Base class for all the Test classes
+ */
 public class TestBase {
 
     @BeforeClass

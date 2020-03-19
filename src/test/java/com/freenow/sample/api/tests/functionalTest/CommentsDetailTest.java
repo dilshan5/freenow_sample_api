@@ -15,6 +15,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+/**
+ *  Test cases which belongs to Comment endpoint
+ */
 public class CommentsDetailTest extends TestBase {
 
     private static int[] commentsIDList;
@@ -34,7 +37,7 @@ public class CommentsDetailTest extends TestBase {
     }
 
     @BeforeMethod
-    public void init() {
+    public void CommentsDetailTest() {
         setCommentsDetails(null);
         setCommentsIDList(null);
         setPostIDList(null);
@@ -84,7 +87,7 @@ public class CommentsDetailTest extends TestBase {
     }
 
     @Parameters({"postID"})
-    @Test(description = "ID-008")
+    @Test(description = "ID-008 - Check all Email addresses format for given PostID")
     public static void testVerifyEmailAddress(@Optional("21") int postID) {
         SoftAssert softAssert = new SoftAssert();
         boolean isValid = false;
@@ -93,7 +96,7 @@ public class CommentsDetailTest extends TestBase {
             isValid = ResponseUtil.isValidEmailAddress(comment.getEmail());
             softAssert.assertTrue(isValid, "Found Invalid email address: " + comment.getEmail() + " in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
             if (isValid)
-                LoggerUtil.logINFO("Verified Email address: " + comment.getEmail() + " as a valid format.");
+                LoggerUtil.logINFO("Verified Email address: " + comment.getEmail() + " as a valid format in comment ID: " + comment.getId() + " which belongs to Post ID: " + comment.getPostId());
         }
         softAssert.assertAll();
     }

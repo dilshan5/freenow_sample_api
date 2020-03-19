@@ -8,6 +8,9 @@ import io.restassured.specification.RequestSpecification;
 
 import java.util.Map;
 
+/**
+ * All REST API related common methods
+ */
 public class RestUtil {
 
     private static String BASE_URI;
@@ -24,9 +27,14 @@ public class RestUtil {
     public RestUtil() {
     }
 
-    /***
-     * This method will set the parameters and send the request to the endpoint
-     * @return will return response
+    /**
+     *
+     * @param headers to be sent
+     * @param bodyString to be sent
+     * @param uri of the request
+     * @param requestMethod HTTP method
+     * @param queryParameters query params if available
+     * @return Response for the request
      */
     public static Response send(Map<String, String> headers, String bodyString, String uri, HTTPRequestMethods requestMethod, Map<String, String> queryParameters) {
         RestAssured.baseURI = BASE_URI;
@@ -46,10 +54,10 @@ public class RestUtil {
     }
 
     /**
-     * Specify the accept header of the request.
-     * Specify the body of the request.
-     *
-     * @return
+     * Build the header and request body
+     * @param headers of the request.
+     * @param body of the request.
+     * @return Request Specification
      */
     private static RequestSpecification getRequestSpec(Map<String, String> headers, String body) {
         RequestSpecBuilder reqSpecBuilder = new RequestSpecBuilder();
@@ -65,10 +73,10 @@ public class RestUtil {
     }
 
     /**
-     * Specify the endpoint of the request.
-     * Specify the query parameters of the request.
      *
-     * @return
+     * @param url endpoint of the request.
+     * @param queryParameters query parameters of the request.
+     * @return search query params
      */
     public static String setQueryParameters(String url, Map<String, String> queryParameters) {
         if (queryParameters == null || queryParameters.isEmpty())
