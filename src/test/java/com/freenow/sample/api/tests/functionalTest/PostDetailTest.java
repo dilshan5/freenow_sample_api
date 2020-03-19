@@ -19,9 +19,9 @@ import org.testng.asserts.SoftAssert;
  */
 public class PostDetailTest extends TestBase {
 
-    private static int[] postIDList;
-    private static int[] userIDList;
-    private static Object[] postDetails;
+    private static int[] postIDList;//store all the post ids in the post detail response
+    private static int[] userIDList;//store all user ids in the post detail response
+    private static Object[] postDetails;// store Post details response data
 
     public static void setUserIDList(int[] userIDList) {
         PostDetailTest.userIDList = userIDList;

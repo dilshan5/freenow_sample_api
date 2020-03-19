@@ -21,9 +21,9 @@ import org.testng.asserts.SoftAssert;
  */
 public class CommentsDetailTest extends TestBase {
 
-    private static int[] commentsIDList;
-    private static int[] postIDList;
-    private static Object[] commentsDetails;
+    private static int[] commentsIDList;//store all the comment ids in the comment detail response
+    private static int[] postIDList;//store all the post ids in the comment detail response
+    private static Object[] commentsDetails;// store comment detail response data
 
     public static void setCommentsIDList(int[] commentsIDList) {
         CommentsDetailTest.commentsIDList = commentsIDList;

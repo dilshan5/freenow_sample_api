@@ -19,7 +19,7 @@ import org.testng.asserts.SoftAssert;
 public class UserDetailTest extends TestBase {
 
     private static Long userID;
-    private static Object[] userDetails;
+    private static Object[] userDetails; // store User details data
     private static String responseUserName;
     private static String responseUserEmailAddress;
 

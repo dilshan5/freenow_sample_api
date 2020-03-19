@@ -14,6 +14,11 @@ This test uses a number of open source projects to work properly:
 $ git clone https://github.com/dilshan5/freenow_sample_api.git
 ```
 
+##Branches available:
+In this project you can find two branches:
+ * Matser - Contain up to date code
+ * Working - In progress development of the Test cases 
+
 ### Installation
 This requires [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html) v1.8 to run.
 

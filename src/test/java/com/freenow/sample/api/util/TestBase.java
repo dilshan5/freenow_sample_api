@@ -2,10 +2,7 @@ package com.freenow.sample.api.util;
 
 import com.freenow.sample.api.common.Constant;
 import com.freenow.sample.api.common.LoggerUtil;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 
@@ -17,7 +14,7 @@ public class TestBase {
     @BeforeClass(groups = {Constant.BVT, Constant.REGRESSION})
     public void initClass() {
         RequestUtil.setRequestBaseUrls();
-        System.out.println("====== Start Running Test Class " + this.getClass().toString() + " =========");
+        System.out.println("====== Start Running Test Class " + this.getClass().toString() + " ======");
     }
 
     @BeforeMethod
@@ -29,7 +26,7 @@ public class TestBase {
 
     @AfterClass
     public void cleanUp() {
-        System.out.println("====== End Running Test Class " + this.getClass().toString() + " =========");
+        System.out.println("====== End Running Test Class " + this.getClass().toString() + " ======");
     }
 
 }
