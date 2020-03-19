@@ -6,29 +6,26 @@ jobs:
         - master
     working_directory: ~/circleci-freenow-sample-api # directory where steps will run
     docker:
-      # specify the version you desire here
       - image: circleci/openjdk:8-jdk-stretch
 
     steps: # a collection of executable commands
       - checkout # check out source code to working directory
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           key: circleci-freenow-sample-api-{{ checksum "pom.xml" }}
-      - run: mvn dependency:go-offline # gets the project dependencies
+      - run:
+          name: Install Maven dependencies Offline
+          command: mvn dependency:go-offline # gets the project dependencies
       - save_cache: # saves the project dependencies
           paths:
             - ~/.m2
           key: circleci-freenow-sample-api-{{ checksum "pom.xml" }}
-      - run: mvn package # take the compiled code and package it in its distributable format, such as a JAR
       - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/test-results/testng/
-            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/testng/ \;
-          when: always
+          name: Run the Test
+          command: mvn package # take the compiled code and package it in its distributable format, such as a JAR
       - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
         # Upload test results for display in Test Summary
-               path: ~/test-results
+               path: target/surefire-reports
       - store_artifacts:
           # Upload test summary for display in Artifacts
-          path: ~/test-results/testng /freenow_sample_api-1.0-SNAPSHOT.jar
+          path: target/surefire-reports
 
