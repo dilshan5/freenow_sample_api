@@ -7,7 +7,7 @@ jobs:
     working_directory: ~/circleci-freenow-sample-api # directory where steps will run
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:8-jdk-stretch
 
     steps: # a collection of executable commands
       - checkout # check out source code to working directory
@@ -19,10 +19,16 @@ jobs:
             - ~/.m2
           key: circleci-freenow-sample-api-{{ checksum "pom.xml" }}
       - run: mvn package # take the compiled code and package it in its distributable format, such as a JAR
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/testng/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/testng/ \;
+          when: always
       - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
         # Upload test results for display in Test Summary
-               path: target/surefire-reports
+               path: ~/test-results
       - store_artifacts:
           # Upload test summary for display in Artifacts
-          path: target/freenow_sample_api-1.0-SNAPSHOT.jar
+          path: ~/test-results/testng /freenow_sample_api-1.0-SNAPSHOT.jar
 
