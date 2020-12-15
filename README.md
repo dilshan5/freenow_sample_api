@@ -7,6 +7,7 @@ A sample project which demonstrates how to use RestAssured with Java.
 * https://www.java.com/en/ - is object-oriented programming language
 * https://testng.org/doc/ - is a testing framework
 * https://maven.apache.org/ - Dependency management and project management 
+* https://rest-assured.io/ -  is most commonly used to test REST based services. 
 * https://circleci.com/ - Continuous Integration tool
 
 # Prerequisites
@@ -45,13 +46,13 @@ Open `e2e.xml` or `functional.xml` test suite and run.
 Note: You can change the Parameter values as you wish.
 
 # Running the Test Suite via CLI
-To run function api tests just simply type
+To run function api tests
 
 ```
  mvn clean test -P functional
 ```
 
-To run e2e api tests just simply type
+To run e2e api tests
 ```
  mvn clean test -P e2e
 ```
